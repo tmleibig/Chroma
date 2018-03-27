@@ -1,4 +1,4 @@
-# Chroma Software 
+# Chroma Software
 
 *Project Overview:*
 Chroma is a user interface design to allow the application of user-generated script on GCode. The main idea is to take in GCode 
@@ -10,7 +10,14 @@ possible for us to compile Chroma in different O.S but for now we are only worki
 below are the instruction on how to compile the code:
 
 1.	Run the bat file Spec_Generation.bat or the command line python3 -m PyInstaller --icon src\logo.ico --name Chroma src\Chroma.py
-2.  Run the bat file Spec_Update.bat or the command line python3 -m Pyinstaller Chroma.spec
-3.  Update the spec according to the sample.spec (Open for more detail)
+2.  Update the spec according to the sample_spec.txt (Open for more detail)
+3.  Run the bat file Spec_Update.bat or the command line python3 -m Pyinstaller Chroma.spec
+4.	Executable can be found in generated dist folder, ignore build folder
+5. 	Use clean.bat to delete all generate file from Spec_Generation and start new
 
 *Docs*: The docs folder should contain any documentation on theory and structuring of the C3DM Format and guidelines on what the stripper should produce in order for compabitibility with scripts used to generate printable GCode for different print system.
+
+*Required Package / Software*
+1.	Python3.x
+2.	PyInstaller
+3.	Kivy Library
