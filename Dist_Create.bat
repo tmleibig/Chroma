@@ -1,0 +1,1 @@
+python -m PyInstaller --icon src\logo.ico --name Chroma src\Chroma.py

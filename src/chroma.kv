@@ -1,0 +1,347 @@
+#:kivy 1.10.0
+
+Root:
+    text_input: text_input
+    file_name: file_name
+    text_param: text_param
+
+    GridLayout:
+        cols: 3
+        rows: 4
+        padding: 10
+        spacing: 10
+        Label:
+            text: "GC:Code"
+            size_hint_x: None
+            width: 100
+
+        BoxLayout:
+            orientation: 'vertical'
+            TextInput:
+                id: file_name
+                text: ''
+                size_hint_y: None
+                height: 30
+                multiline: False
+                write_tab: False
+                on_text_validate: root.update(file_name.text)
+
+            TextInput:
+                id: text_input
+                write_tab: False
+                text: ''
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            size_hint_x: None
+            width: 100
+
+            spacing: 10
+
+            Button:
+                text: 'Load GC'
+                on_release: root.show_load()
+                size_hint_x: None
+                width: 100
+
+            Button:
+                text: 'Select All and Copy'
+                size_hint_x: None
+                width: 100
+                text_size: 95, 50
+                valign: 'middle'
+                halign: 'center'
+                on_release: root.copy()
+
+
+
+        Label:
+            text: "SC:Code"
+            size_hint_x: None
+            width: 100
+
+
+        BoxLayout:
+            orientation: 'horizontal'
+            ListView:
+                adapter: root.list_adapter
+
+            BoxLayout:
+                orientation: 'horizontal'
+                TextInput:
+                    id: text_param
+                    write_tab: False
+                    text: ''
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            size_hint_x: None
+            width: 100
+
+            spacing: 10
+
+            Button:
+                text: 'Move Up'
+                on_release: root.moveup()
+
+            Button:
+                text: 'Move Down'
+                on_release: root.movedown()
+
+            Button:
+                text: 'Delete'
+                on_release: root.remove()
+
+            Button:
+                text: 'Load Param'
+                on_release: root.show_param_list()
+
+            Button:
+                text: 'Load SC'
+                on_release: root.add_to_list()
+                size_hint_x: None
+                width: 100
+
+        Label:
+            text: "Rename"
+            size_hint_x: None
+            width: 100
+            size_hint_y: None
+            height: 35
+
+        TextInput:
+            id: rename
+            text: ""
+            size_hint_y: None
+            height: 35
+            multiline: False
+            write_tab: False
+            on_focus: root.validatename(rename.text)
+
+        Button:
+            text: "Set"
+            size_hint_x: None
+            width: 100
+            size_hint_y: None
+            height: 35
+            on_release: root.setname()
+
+        Button:
+            text: 'Simulate'
+            size_hint_x: None
+            width: 100
+            size_hint_y: None
+            height: 60
+            on_release: root.opensimu()
+
+
+        BoxLayout:
+            size_hint_y: None
+            height: 60
+            orientation: "horizontal"
+            spacing: 10
+
+            Button:
+                text: 'Detail'
+                size_hint_y: None
+                height: 60
+                on_release: root.opendetail()
+
+            Button:
+                text: 'Convert'
+                size_hint_y: None
+                height: 60
+                on_release: root.convert()
+
+
+
+        Button:
+            text: 'Quit'
+            size_hint_x: None
+            width: 100
+            size_hint_y: None
+            height: 60
+            on_release: root.exit()
+
+
+
+<LoadGC>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        BoxLayout:
+            size_hint_y: None
+            height: sp(35)
+
+            Button:
+                text: 'Icon View'
+                on_press: fc.view_mode = 'icon'
+            Button:
+                text: 'List View'
+                on_press: fc.view_mode = 'list'
+
+        Label:
+            text: fc.path
+            size_hint_y: None
+            height: 30
+
+        FileChooser:
+            id: fc
+            path: root.directory
+            filters: ['*.GCode']
+            FileChooserListLayout
+            FileChooserIconLayout
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(fc.path, fc.selection)
+
+<LoadParam>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        BoxLayout:
+            size_hint_y: None
+            height: sp(35)
+
+            Button:
+                text: 'Icon View'
+                on_press: fc.view_mode = 'icon'
+            Button:
+                text: 'List View'
+                on_press: fc.view_mode = 'list'
+
+        Label:
+            text: fc.path
+            size_hint_y: None
+            height: 30
+
+        FileChooser:
+            id: fc
+            path: root.directory
+            filters: ['*.param']
+            FileChooserIconLayout
+            FileChooserListLayout
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load_param(fc.path, fc.selection)
+
+<AddSC>:
+    BoxLayout:
+
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        BoxLayout:
+            size_hint_y: None
+            height: sp(35)
+
+            Button:
+                text: 'Icon View'
+                on_press: fc.view_mode = 'icon'
+            Button:
+                text: 'List View'
+                on_press: fc.view_mode = 'list'
+
+        Label:
+            text: fc.path
+            size_hint_y: None
+            height: 30
+
+        FileChooser:
+            id: fc
+            path: root.directory
+            multiselect: True
+            filters: ['*.py']
+            FileChooserIconLayout
+            FileChooserListLayout
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.add(fc.path, fc.selection)
+
+<Notification>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        Label:
+            text: root.fname
+
+        BoxLayout:
+
+            orientation: "horizontal"
+
+            Button:
+                text: "Close"
+                on_release: root.cancel()
+
+            Button:
+                text: "Open file"
+                on_release: root.open(root.fname)
+
+            Button:
+                text: "Open Simulator"
+                on_release: root.simu(root.fname)
+
+<Error>:
+    BoxLayout:
+        pos: root.pos
+        orientation: "vertical"
+
+        Label:
+            text: root.error
+            text_size: root.width, None
+            size: self.texture_size
+            size_hint: (1,0.8)
+
+        Button:
+            text: "Close"
+            size_hint: (1,0.2)
+            on_release: root.cancel()
+
+<ScriptDetail>:
+    BoxLayout:
+        pos: root.pos
+        orientation: "vertical"
+
+        Label:
+            text: root.script
+            text_size: root.width, None
+            size: self.texture_size
+            size_hint: (1, 0.8)
+
+        Button:
+            text: "Close"
+            size_hint: (1,0.2)
+            on_release: root.cancel()

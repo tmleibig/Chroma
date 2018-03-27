@@ -1,0 +1,12 @@
+File_name: Print_Parameter.param
+Version: 0.1.1
+
+M221_Parameters:
+Width = 1.2
+Height = 0.8
+Multiplier = 1.0
+Pulse Per NL = 0.160
+
+Print_Parameters:
+F_Value = 1000
+G1_E_Value = 1.0
