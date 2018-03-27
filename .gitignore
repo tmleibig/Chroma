@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+#PyInstaller Ignores
+build/
+dist/
+
+#Chroma Ignores
+Chroma.spec
