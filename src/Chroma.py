@@ -79,6 +79,7 @@ class Root(FloatLayout):
     #Contain text for rename
     rename = None
     directory = os.getcwd()
+    script_directory = directory + "\\scripts"
     script_list = []
 
 
@@ -98,7 +99,7 @@ class Root(FloatLayout):
     # Move selected script up by one
     def moveup(self):
         for item in self.list_adapter.selection:
-            item_path = os.path.join(self.directory, item.text)
+            item_path = os.path.join(self.script_directory, item.text)
             position = self.list_adapter.data.index(item_path)
             #print(position)
             if position == 0:
@@ -110,7 +111,7 @@ class Root(FloatLayout):
     # Move selected script down by one
     def movedown(self):
         for item in self.list_adapter.selection:
-            item_path = os.path.join(self.directory, item.text)
+            item_path = os.path.join(self.script_directory, item.text)
             position = self.list_adapter.data.index(item_path)
             #print(position)
             self.list_adapter.data.remove(item_path)
@@ -119,7 +120,8 @@ class Root(FloatLayout):
     #Only work for file within directory. Remove script from list of scripts
     def remove(self):
         for item in self.list_adapter.selection:
-            remove_item = str(self.directory+"\\"+item.text)
+            print(item)
+            remove_item = str(self.script_directory+"\\"+item.text)
             self.list_adapter.data.remove(remove_item)
 
     #Apply scripts onto file_input
@@ -159,6 +161,7 @@ class Root(FloatLayout):
 
         #Apply scripts in order with each output being the input for the next script
         for i in scriptorder:
+            print("SCRIPT TO WORK ON: " + str(i))
             result = subprocess.run(["python", i, file , str(param)], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             fargue = file.split("\\")
             fdat = fargue[-1].split(".")
@@ -199,7 +202,7 @@ class Root(FloatLayout):
                 now = datetime.datetime.now()
                 time_now = now.strftime("%m-%d %H-%M-%S")
                 new_directory = self.directory+"\\debug\\"+file_name+" "+time_now
-                print("new directory is:  "+new_directory)
+                #print("new directory is:  "+new_directory)
                 try:
                     os.makedirs(new_directory)
                 except OSError as e:
@@ -268,8 +271,8 @@ class Root(FloatLayout):
 
     #Function to generate the U/I to add script
     def add_to_list(self):
-        content = AddSC(directory = self.directory,add =self.add, cancel=self.dismiss_popup)
-        fb_content = FileBrowser(select_string = 'Select',path = self.directory, on_canceled = self.dismiss_filebs, multiselect = True, dirselect = True, on_success = self.add_fb, filters = ['*.py'])
+        content = AddSC(directory = self.script_directory,add =self.add, cancel=self.dismiss_popup)
+        fb_content = FileBrowser(select_string = 'Select',path = self.script_directory, on_canceled = self.dismiss_filebs, multiselect = True, dirselect = False, on_success = self.add_fb, filters = ['*.py'])
         self._popup = Popup(title="Add file", content=fb_content,
                             size_hint=(0.9, 0.9))
         self._popup.open()
@@ -280,8 +283,8 @@ class Root(FloatLayout):
     #Function to add a script into script_list
     def add(self, path, filename):
         for i in range(0,len(filename)):
+            #print("IN ADD FUNCTION: "+str(os.path.join(path, filename[i])))
             self.list_adapter.data.append(str(os.path.join(path, filename[i])))
-            self.directory = os.getcwd()
             self.dismiss_popup()
 
     #Function to generate U/I to load gcode file
@@ -314,7 +317,7 @@ class Root(FloatLayout):
             self.text_param.text = stream.read()
 
         self.param_name = str(os.path.join(path, filename[0]))
-        print(self.param_name)
+        #print(self.param_name)
         self.directory = os.getcwd()
         self.dismiss_popup()
 
@@ -342,9 +345,9 @@ class Root(FloatLayout):
             self._popup.open()
 
         for item in self.list_adapter.selection:
-            print(item.text)
+            #print(item.text)
             spit = item.text.split("\\")
-            print(spit[-1])
+            #print(spit[-1])
             file = re.compile(spit[-1])
             path = os.getcwd()
             script = str(os.path.join(path, "ScriptDetail.txt"))
