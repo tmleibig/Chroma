@@ -1,5 +1,5 @@
 # -*- mode: python -*-
-from kivy.deps import sdl2, glew
+from kivy.deps import sdl2, glew  #Please add this in (Instructed by Kivy)
 block_cipher = None
 
 
@@ -7,7 +7,7 @@ a = Analysis(['src\\Chroma.py'],
              pathex=['C:\\Users\\Polask Nguyen\\OneDrive\\Chromatic 3D Materials\\SCRIPT_WORK\\Chromatic_3D_Chroma'],
              binaries=[],
              datas=[],
-             hiddenimports=["win32timezone"],
+             hiddenimports=["win32timezone"], #Please add this in
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -27,11 +27,11 @@ exe = EXE(pyz,
           upx=True,
           console=True , icon='src\\logo.ico')
 		  
-coll = COLLECT(exe, Tree('src\\'),
+coll = COLLECT(exe, Tree('src\\'), #Please add this in (Instructed by Kivy)
                a.binaries,
                a.zipfiles,
                a.datas,
-			   *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
+	       *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],  #Please add this in (Instructed by Kivy)
                strip=False,
                upx=True,
                name='Chroma')
