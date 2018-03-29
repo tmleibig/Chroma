@@ -5,3 +5,9 @@
 *Chroma.py:* Will mainly contain all the function definition used by each of the button and frame found in Chroma. 
 
 *Chroma.kv*: Contain all the visual aspect of the U/I. 
+
+*Print_Parameter.param*: Contain all the parameter used by scripts to generate GCode
+
+*ScriptDetail.txt*: Contain word description of each Scripts which can be access in the U/I
+
+*Debug*: Contain all record of GCode run on the software.

@@ -2,6 +2,7 @@ import sys
 import re
 import datetime
 
+#Slicing GCode input
 file = sys.argv[1]
 fargue = file.split("\\")
 fdat = fargue[-1].split(".")
@@ -9,6 +10,7 @@ filename = fdat[0]
 filetype = fdat[1]
 param = sys.argv[2]
 
+#Regex Definition and Global Variable Definition
 p_per_nl = 0.0
 p_per_nl_regex = re.compile("^Pulse Per NL")
 multiplier = 0.0
@@ -38,9 +40,11 @@ with open(sys.argv[2]) as f:
             rs = r.split('=')
             height = float(rs[-1])
 
+#Generating output file
 out = open(filename+"_fixed."+filetype, 'w')
 lines =  open(sys.argv[1]).readlines()
 
+#Add in pre_code
 now = datetime.datetime.now()
 out.write(";Generated @ "+now.strftime("%Y-%m-%d %H:%M")+"\n")
 out.write(";Modifyied by Hyrel Code Converter Scripts (C3DM Format)\n")
@@ -62,10 +66,12 @@ out.write("G0 Z5\t\n")
 out.write("G0 X240 Y10\t\n")
 out.write("G0 X10 Y10\t\n\n")
 
+#Copy the rest of the code
 with open(sys.argv[1]) as f:
     for index, r in enumerate(f):
         out.write(r)
 
+#Add in post_code
 out.write("\n;Park Go To\n")
 out.write("G0 X10 Y10\t;Rapid to\n")
 out.write("G0 X240 Y10\t;Rapid to\n")

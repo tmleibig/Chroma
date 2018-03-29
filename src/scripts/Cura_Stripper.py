@@ -13,6 +13,7 @@ def x_y_strip(command):
         return new_command + "\n"
     return command
 
+#Regex Definition
 x_re = re.compile("X[0-9.]+")
 y_re = re.compile("Y[--9.]+")
 g1_regex = re.compile("^G1 [ A-Z0-9.-]*")
@@ -28,6 +29,9 @@ M107 = re.compile("^M107")
 e = re.compile("E[0-9.-]+")
 type_regex = re.compile(";TYPE:[A-Za-z]+")
 z_regex = re.compile("Z[0-9.]+")
+m221_regex = re.compile("M221")
+
+#Slicing GCode input
 file = sys.argv[1]
 fargue = file.split("\\")
 fdat = fargue[-1].split(".")
@@ -35,6 +39,8 @@ filename = fdat[0]
 filetype = fdat[1]
 fargue[-1] = filename+"_fixed."+filetype
 file = "\\".join(fargue)
+
+#Defining global variables
 chunk = "G1 Z   0.000\n"
 curve_checker = False
 curve_counter = 1
@@ -43,16 +49,10 @@ code_start_flag = False
 z_counter = 0
 saved_r = ""
 layer_start_flag = False
-out = open(filename+"_fixed."+filetype, 'w')
 record_g0_layer = ""
 record_g0_curve = ""
 curve_length = 1
 transition_move = ""
-
-now = datetime.datetime.now()
-out.write(";Stripped @ "+now.strftime("%Y-%m-%d %H:%M")+"\n")
-out.write(";G1 Strip Version 1.0"+"\n")
-lines =  open(sys.argv[1]).readlines()
 done = False
 end_move = False
 last_curve = False
@@ -62,10 +62,23 @@ case1_g = ""
 out_move = ""
 start_layer = True
 
+#Generating output file
+out = open(filename+"_fixed."+filetype, 'w')
+
+#Adding in detail of scripts
+now = datetime.datetime.now()
+out.write(";Stripped @ "+now.strftime("%Y-%m-%d %H:%M")+"\n")
+out.write(";G1 Strip Version 1.0"+"\n")
+lines =  open(sys.argv[1]).readlines()
+
+
 with open(sys.argv[1]) as f:
     for index, r in enumerate(f):
+        #Check for M221 command record it in C3DM as comment
+        if re.search(m221_regex, r) is not None:
+            out.write(";Cura Flow Rate Setting "+r)
         # Check for layer count
-        if re.search(layer_c,r) is not None:
+        elif re.search(layer_c,r) is not None:
             rs = r.split(":")
             rs[0] = ";Layer count"
             r = ": ".join(rs)

@@ -2,6 +2,7 @@ import sys
 import re
 import datetime
 
+#Slicing GCode input
 file = sys.argv[1]
 fargue = file.split("\\")
 fdat = fargue[-1].split(".")
@@ -9,6 +10,7 @@ filename = fdat[0]
 filetype = fdat[1]
 param = sys.argv[2]
 
+#Regex Definition And Global Variables Defnition
 height = 0.0
 height_regex = re.compile("^Height")
 
@@ -31,6 +33,7 @@ final_z_move = re.compile(";move Z")
 
 g1_regex = re.compile("^G1 ")
 
+#Look for variables in PARAM file
 with open(sys.argv[2]) as f:
     for index, r in enumerate(f):
 
@@ -49,6 +52,7 @@ with open(sys.argv[2]) as f:
             rs = r.split('=')
             e_value = float(rs[-1])
 
+#Generating output file
 out = open(filename+"_fixed."+filetype, 'w')
 lines =  open(sys.argv[1]).readlines()
 

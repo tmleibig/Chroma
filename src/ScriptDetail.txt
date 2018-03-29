@@ -1,4 +1,5 @@
 Cura_Stripper.py : Strip Cura-Generated Code into C3DM Format
-Cura_Stripper_Curve_Length.py :  Generate the length of each curve as commment at the end of each curve
+Cura_Stripper_Curve_Length.py :  Generate the length of each curve as commment at the end of each curve. Use after GCode generation is completed.
 Hyrel_Generate_Layer.py : Add in Z movement for C3DM Format to generate layer in print
 Hyrel_Pre_Post_Code.py: Add in pre-code and post-code for Hyrel Printer
+Volume_Calculator.py: Calculate the volume of the print and also total distance. Used after Curve_Length_Calculator.py
